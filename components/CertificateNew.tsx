@@ -130,24 +130,55 @@ interface CertificateProps {
 
 export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
   useEffect(() => {
-    // Trigger confetti on mount
-    const duration = 3000
-    const end = Date.now() + duration
+    // Tier-specific confetti configurations
+    const confettiConfig = {
+      Platinum: {
+        colors: ['#a78bfa', '#8b5cf6', '#c084fc', '#e9d5ff', '#ffffff'],
+        particleCount: 5,
+        spread: 70,
+        duration: 4000,
+        scalar: 1.2,
+        shapes: ['star', 'circle'],
+      },
+      Gold: {
+        colors: ['#fbbf24', '#f59e0b', '#d97706', '#fde68a', '#fffbeb'],
+        particleCount: 4,
+        spread: 60,
+        duration: 3500,
+        scalar: 1.1,
+        shapes: ['circle'],
+      },
+      Silver: {
+        colors: ['#94a3b8', '#cbd5e1', '#e2e8f0', '#f1f5f9', '#ffffff'],
+        particleCount: 3,
+        spread: 55,
+        duration: 3000,
+        scalar: 1,
+        shapes: ['circle'],
+      },
+    }
+
+    const config = confettiConfig[result.tier as keyof typeof confettiConfig]
+    const end = Date.now() + config.duration
 
     const frame = () => {
       confetti({
-        particleCount: 3,
+        particleCount: config.particleCount,
         angle: 60,
-        spread: 55,
+        spread: config.spread,
         origin: { x: 0 },
-        colors: ['#667eea', '#764ba2', '#f093fb'],
+        colors: config.colors,
+        scalar: config.scalar,
+        shapes: config.shapes as confetti.Shape[],
       })
       confetti({
-        particleCount: 3,
+        particleCount: config.particleCount,
         angle: 120,
-        spread: 55,
+        spread: config.spread,
         origin: { x: 1 },
-        colors: ['#667eea', '#764ba2', '#f093fb'],
+        colors: config.colors,
+        scalar: config.scalar,
+        shapes: config.shapes as confetti.Shape[],
       })
 
       if (Date.now() < end)
@@ -155,7 +186,21 @@ export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
     }
 
     frame()
-  }, [])
+
+    // Special platinum burst
+    if (result.tier === 'Platinum') {
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 160,
+          origin: { y: 0.6 },
+          colors: config.colors,
+          shapes: ['star'],
+          scalar: 1.5,
+        })
+      }, 500)
+    }
+  }, [result.tier])
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {

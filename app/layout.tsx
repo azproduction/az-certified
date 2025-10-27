@@ -23,7 +23,39 @@ const playfairDisplay = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'A.Z. Certified Exam',
-  description: 'Cosplay Photography Excellence Certification',
+  description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification. Globally recognized qualification for photography excellence.',
+  keywords: ['cosplay photography', 'certification', 'professional exam', 'photography certification', 'A.Z. certified'],
+  authors: [{ name: 'A.Z. Certification Board' }],
+  openGraph: {
+    title: 'A.Z. Certified Exam',
+    description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'A.Z. Certified',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'A.Z. Certified Exam - Cosplay Photography Excellence Certification',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'A.Z. Certified Exam',
+    description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification.',
+    images: ['/og-image.jpg'],
+    creator: '@azcertified',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
 }
 
 export default function RootLayout({
