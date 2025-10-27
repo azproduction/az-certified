@@ -18,10 +18,23 @@ const Card = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: ${props => props.theme.fontSizes['3xl']};
-  margin-bottom: ${props => props.theme.spacing.md};
+  font-size: 3rem;
+  font-weight: 900;
   text-align: center;
   color: ${props => props.theme.colors.text};
+  letter-spacing: 0.02em;
+  margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.fontSizes['3xl']};
+  }
+`
+
+const Subtitle = styled.div`
+  font-size: 1.5rem;
+  text-align: center;
+  color: #303534;
+    margin-bottom: ${props => props.theme.spacing.md};
 `
 
 const Form = styled.form`
@@ -93,7 +106,8 @@ export function NameInput({ onSubmit, initialName = '' }: NameInputProps) {
   return (
     <Container>
       <Card>
-        <Title>AZ Certified Quiz</Title>
+        <Title>A.Z. Certified Exam</Title>
+        <Subtitle>Cosplay Photography Excellence Certification</Subtitle>
         <Form onSubmit={handleSubmit}>
           <InputGroup>
             <Label htmlFor="name">Your Name</Label>

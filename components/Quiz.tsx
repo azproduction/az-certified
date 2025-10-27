@@ -1,7 +1,8 @@
 'use client'
 
 import type { Question } from '@/types/quiz'
-import React from 'react'
+import { DEFAULT_QUIZ_CONFIG } from '@/types/quiz'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -67,9 +68,26 @@ const QuestionCard = styled.div`
 
 const QuestionText = styled.h2`
   font-size: ${props => props.theme.fontSizes['2xl']};
-  margin-bottom: ${props => props.theme.spacing.xl};
+  margin-bottom: ${props => props.theme.spacing.md};
   color: ${props => props.theme.colors.text};
   line-height: 1.4;
+`
+
+const TopicTags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${props => props.theme.spacing.sm};
+  margin-bottom: ${props => props.theme.spacing.xl};
+`
+
+const Tag = styled.span`
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  font-size: ${props => props.theme.fontSizes.sm};
+  background-color: ${props => props.theme.colors.surface};
+  color: ${props => props.theme.colors.text};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-weight: 500;
 `
 
 const OptionsGrid = styled.div`
@@ -138,6 +156,8 @@ interface QuizProps {
   onPrevious: () => void
   onSubmit: () => void
   timeRemaining: number // in milliseconds
+  shuffleOptions?: boolean
+  shuffleSeed?: number
 }
 
 export function Quiz({
@@ -149,11 +169,42 @@ export function Quiz({
   onPrevious,
   onSubmit,
   timeRemaining,
+  shuffleOptions = DEFAULT_QUIZ_CONFIG.shuffleOptions,
+  shuffleSeed = DEFAULT_QUIZ_CONFIG.shuffleSeed,
 }: QuizProps) {
   const currentQuestion = questions[currentIndex]
   const progress = ((currentIndex + 1) / questions.length) * 100
   const isLastQuestion = currentIndex === questions.length - 1
   const selectedAnswer = answers[currentQuestion.id]
+
+  // Shuffle options if enabled - maintains consistent shuffle per question
+  const shuffledOptions = useMemo(() => {
+    if (!shuffleOptions) {
+      return currentQuestion.options.map((option, index) => ({ option, originalIndex: index }))
+    }
+
+    // Create array of options with their original indices
+    const optionsWithIndices = currentQuestion.options.map((option, index) => ({
+      option,
+      originalIndex: index,
+    }))
+
+    // Determine seed: use provided shuffleSeed, or fall back to question ID-based seed
+    const seed = shuffleSeed ?? currentQuestion.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    const random = (index: number) => {
+      const x = Math.sin(seed + index) * 10000
+      return x - Math.floor(x)
+    }
+
+    // Fisher-Yates shuffle with seeded random
+    const shuffled = [...optionsWithIndices]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(random(i) * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+
+    return shuffled
+  }, [currentQuestion.id, currentQuestion.options, shuffleOptions, shuffleSeed])
 
   // Format time remaining
   const formatTime = (ms: number) => {
@@ -196,12 +247,19 @@ export function Quiz({
       <QuizContent>
         <QuestionCard>
           <QuestionText>{currentQuestion.question}</QuestionText>
+          {currentQuestion.topic_tags && currentQuestion.topic_tags.length > 0 && (
+            <TopicTags>
+              {currentQuestion.topic_tags.map((tag, index) => (
+                <Tag key={index}>{tag}</Tag>
+              ))}
+            </TopicTags>
+          )}
           <OptionsGrid>
-            {currentQuestion.options.map((option, index) => (
+            {shuffledOptions.map(({ option, originalIndex }, displayIndex) => (
               <OptionButton
-                key={index}
-                $selected={selectedAnswer === index}
-                onClick={() => onAnswerSelect(currentQuestion.id, index)}
+                key={displayIndex}
+                $selected={selectedAnswer === originalIndex}
+                onClick={() => onAnswerSelect(currentQuestion.id, originalIndex)}
               >
                 {option}
               </OptionButton>

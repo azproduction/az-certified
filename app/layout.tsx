@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Dancing_Script, Great_Vibes } from 'next/font/google'
+import { Dancing_Script, Great_Vibes, Playfair_Display } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import StyledComponentsRegistry from '@/lib/registry'
 
@@ -15,9 +15,15 @@ const dancingScript = Dancing_Script({
   variable: '--font-dancing-script',
 })
 
+const playfairDisplay = Playfair_Display({
+  weight: ['700', '900'],
+  subsets: ['latin'],
+  variable: '--font-playfair',
+})
+
 export const metadata: Metadata = {
-  title: 'AZ Certified',
-  description: 'Test your knowledge and earn your certificate',
+  title: 'A.Z. Certified Exam',
+  description: 'Cosplay Photography Excellence Certification',
 }
 
 export default function RootLayout({
@@ -26,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${greatVibes.variable} ${dancingScript.variable}`}>
+    <html lang="en" className={`${greatVibes.variable} ${dancingScript.variable} ${playfairDisplay.variable}`}>
       <body>
         <StyledComponentsRegistry>
           <ThemeProvider>{children}</ThemeProvider>

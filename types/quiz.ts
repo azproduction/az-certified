@@ -14,6 +14,12 @@ export interface Question {
   difficulty: string
 }
 
+// Quiz configuration
+export interface QuizConfig {
+  shuffleOptions: boolean
+  shuffleSeed?: number // Random seed for shuffle, undefined = use question ID
+}
+
 // Quiz state
 export interface QuizState {
   selectedQuestions: Question[]
@@ -44,8 +50,15 @@ export const SCORE_THRESHOLDS = {
 } as const
 
 export const CRITICAL_QUESTION_FAIL_THRESHOLD = 2
-export const TOTAL_QUESTIONS = 5
+export const TOTAL_QUESTIONS = 50
 export const TIME_LIMIT_MS = 60 * 60 * 1000 // 1 hour
+
+// Default quiz configuration
+export const DEFAULT_QUIZ_CONFIG: QuizConfig = {
+  shuffleOptions: true,
+  // Use question ID-based seed by default
+  shuffleSeed: Date.now(),
+}
 
 // Zod schemas for localStorage validation
 export const participantNameSchema = z.object({

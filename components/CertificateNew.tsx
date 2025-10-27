@@ -6,14 +6,23 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { CertificateSVGFrame } from './CertificateSVGFrame'
 
-const Container = styled.div`
+const Container = styled.div<{ $tier: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: ${props => props.theme.spacing.lg};
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: ${props => {
+    const tier = props.$tier.toLowerCase()
+    if (tier === 'platinum')
+      return props.theme.colors.certificate.platinum.gradient
+    if (tier === 'gold')
+      return props.theme.colors.certificate.gold.gradient
+    if (tier === 'silver')
+      return props.theme.colors.certificate.silver.gradient
+    return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+  }};
 `
 
 const CertificateWrapper = styled.div`
@@ -96,14 +105,8 @@ const SignatureSection = styled.div`
 
 const SignatureLabel = styled.div`
   font-family: var(--font-dancing-script), cursive;
-  font-size: 3cqw;
+  font-size: 4cqw;
   color: #303534;
-`
-
-const SignatureLine = styled.div`
-  width: 200px;
-  border-bottom: 2px solid #303534;
-  margin-bottom: 1rem;
 `
 
 const InfoRow = styled.div`
@@ -113,28 +116,11 @@ const InfoRow = styled.div`
   font-size: 1.5cqw;
   color: #6b7280;
   width: 100%;
+  margin-top: -2cqw;
 `
 
 const InfoItem = styled.div`
   font-family: var(--font-dancing-script), cursive;
-`
-
-const RestartButton = styled.button`
-  margin-top: ${props => props.theme.spacing.xl};
-  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
-  font-size: ${props => props.theme.fontSizes.lg};
-  font-weight: 600;
-  color: white;
-  background-color: ${props => props.theme.colors.primary};
-  border: none;
-  border-radius: ${props => props.theme.borderRadius.md};
-  transition: background-color ${props => props.theme.transitions.fast};
-  pointer-events: auto;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${props => props.theme.colors.primaryHover};
-  }
 `
 
 interface CertificateProps {
@@ -180,7 +166,7 @@ export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
   }
 
   return (
-    <Container>
+    <Container $tier={result.tier}>
       <CertificateWrapper>
         <CertificateSVGFrame tier={result.tier} />
         <TextOverlay>
@@ -197,10 +183,10 @@ export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
               Certificate is proudly presented to
             </Subtitle>
 
-            <ParticipantName>{result.participantName} Pewpew ololo ididwiidw  iidwi iewieiwiew </ParticipantName>
+            <ParticipantName>{result.participantName}</ParticipantName>
 
             <DescriptionText>
-              has successfully completed the AZ Certified Quiz
+              has successfully completed the A.Z. Certified Exam
               and demonstrated exceptional knowledge in the field,
               achieving a score of
               {' '}
@@ -210,7 +196,7 @@ export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
               {' '}
               (
               {result.score}
-              %).
+              %)
             </DescriptionText>
           </TopSection>
 
