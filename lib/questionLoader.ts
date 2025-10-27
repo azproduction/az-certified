@@ -1,54 +1,55 @@
-import { Question, TOTAL_QUESTIONS } from '@/types/quiz';
+import type { Question } from '@/types/quiz'
+import { TOTAL_QUESTIONS } from '@/types/quiz'
 
 // Import JSONL file as raw string (webpack configured to handle this)
-// @ts-ignore - webpack will handle this import
-import questionsRaw from '../questions.jsonl';
+// @ts-expect-error - webpack will handle this import
+import questionsRaw from '../questions.jsonl'
 
 /**
  * Parse JSONL file content into an array of questions
  */
 export function parseQuestionsFromJSONL(raw: string): Question[] {
-  const lines = raw.trim().split('\n');
+  const lines = raw.trim().split('\n')
   return lines
     .filter(line => line.trim().length > 0)
-    .map(line => JSON.parse(line) as Question);
+    .map(line => JSON.parse(line) as Question)
 }
 
 /**
  * Select 50 questions: all critical questions + random selection from normal questions
  */
 export function selectQuestions(allQuestions: Question[]): Question[] {
-  const critical = allQuestions.filter(q => q.importance === 'critical');
-  const normal = allQuestions.filter(q => q.importance === 'normal');
+  const critical = allQuestions.filter(q => q.importance === 'critical')
+  const normal = allQuestions.filter(q => q.importance === 'normal')
 
   // Ensure we have enough questions
   if (critical.length + normal.length < TOTAL_QUESTIONS) {
-    throw new Error('Not enough questions in the question bank');
+    throw new Error('Not enough questions in the question bank')
   }
 
   // Calculate how many normal questions we need
-  const normalNeeded = TOTAL_QUESTIONS - critical.length;
+  const normalNeeded = TOTAL_QUESTIONS - critical.length
 
   // Randomly select normal questions
-  const shuffledNormal = [...normal].sort(() => Math.random() - 0.5);
-  const selectedNormal = shuffledNormal.slice(0, normalNeeded);
+  const shuffledNormal = [...normal].sort(() => Math.random() - 0.5)
+  const selectedNormal = shuffledNormal.slice(0, normalNeeded)
 
   // Combine and shuffle all selected questions
-  const allSelected = [...critical, ...selectedNormal];
-  return allSelected.sort(() => Math.random() - 0.5);
+  const allSelected = [...critical, ...selectedNormal]
+  return allSelected.sort(() => Math.random() - 0.5)
 }
 
 /**
  * Get all questions from the embedded JSONL data
  */
 export function getAllQuestions(): Question[] {
-  return parseQuestionsFromJSONL(questionsRaw);
+  return parseQuestionsFromJSONL(questionsRaw)
 }
 
 /**
  * Generate a random set of 50 questions for a new quiz session
  */
 export function generateQuizQuestions(): Question[] {
-  const allQuestions = getAllQuestions();
-  return selectQuestions(allQuestions);
+  const allQuestions = getAllQuestions()
+  return selectQuestions(allQuestions)
 }

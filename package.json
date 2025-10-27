@@ -1,12 +1,14 @@
 {
-  "name": "temp-next",
+  "name": "az-certified",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "export": "next build --webpack"
+    "export": "next build --webpack",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@types/canvas-confetti": "^1.9.0",
@@ -18,10 +20,15 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^6.1.0",
+    "@eslint-react/eslint-plugin": "^2.2.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9.38.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
     "typescript": "^5"
   }
 }

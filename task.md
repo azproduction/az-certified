@@ -2,10 +2,9 @@
 
 ## Background
 
-I conducted a theoretical part of my masterclass and I want to assess my student's understanding of the content. 
+I conducted a theoretical part of my masterclass and I want to assess my student's understanding of the content.
 
 As a result I want to give them a virtual certificate in Silver Gold and Platinum levels. It was 4h lecture with 200 slides.
-
 
 ## App
 
@@ -36,10 +35,10 @@ Failing >=2 of these items => automatic fail, regardless of total score
   - Do not tell if answer was correct or not
   - Participants can revisit any questions and change answer
   - Time limit to one hour
-- Failure 
+- Failure
 - Certificate page
-  - Each grade should have different style 
-  - Should mention their name and number of correct answers 
+  - Each grade should have different style
+  - Should mention their name and number of correct answers
   - should look cool so people want to share result
   - use svg for frame
   - give an option to download a 9x16 image with a certificate picture for instagram story (LATER)

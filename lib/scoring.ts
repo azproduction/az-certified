@@ -1,18 +1,20 @@
-import {
-  Question,
-  CertificateTier,
+import type {
   CertificateResult,
-  SCORE_THRESHOLDS,
+  CertificateTier,
+  Question,
+} from '@/types/quiz'
+import {
   CRITICAL_QUESTION_FAIL_THRESHOLD,
-} from '@/types/quiz';
+  SCORE_THRESHOLDS,
+} from '@/types/quiz'
 
 /**
  * Generate a unique certificate ID
  */
 export function generateCertificateId(): string {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 9);
-  return `CERT-${timestamp}-${random}`.toUpperCase();
+  const timestamp = Date.now().toString(36)
+  const random = Math.random().toString(36).substring(2, 9)
+  return `CERT-${timestamp}-${random}`.toUpperCase()
 }
 
 /**
@@ -21,37 +23,41 @@ export function generateCertificateId(): string {
 export function calculateResults(
   questions: Question[],
   answers: Record<string, number | null>,
-  participantName: string
+  participantName: string,
 ): CertificateResult {
-  let correctAnswers = 0;
-  let criticalWrong = 0;
+  let correctAnswers = 0
+  let criticalWrong = 0
 
   // Count correct answers and critical failures
   questions.forEach((question) => {
-    const userAnswer = answers[question.id];
+    const userAnswer = answers[question.id]
     if (userAnswer === question.answer) {
-      correctAnswers++;
-    } else if (question.importance === 'critical') {
-      criticalWrong++;
+      correctAnswers++
     }
-  });
+    else if (question.importance === 'critical') {
+      criticalWrong++
+    }
+  })
 
-  const score = (correctAnswers / questions.length) * 100;
+  const score = (correctAnswers / questions.length) * 100
 
   // Determine tier
-  let tier: CertificateTier = 'Failed';
+  let tier: CertificateTier = 'Failed'
 
   // Auto-fail if 2 or more critical questions are wrong
   if (criticalWrong >= CRITICAL_QUESTION_FAIL_THRESHOLD) {
-    tier = 'Failed';
-  } else {
+    tier = 'Failed'
+  }
+  else {
     // Check thresholds (must meet threshold, not round up)
     if (score >= SCORE_THRESHOLDS.Platinum) {
-      tier = 'Platinum';
-    } else if (score >= SCORE_THRESHOLDS.Gold) {
-      tier = 'Gold';
-    } else if (score >= SCORE_THRESHOLDS.Silver) {
-      tier = 'Silver';
+      tier = 'Platinum'
+    }
+    else if (score >= SCORE_THRESHOLDS.Gold) {
+      tier = 'Gold'
+    }
+    else if (score >= SCORE_THRESHOLDS.Silver) {
+      tier = 'Silver'
     }
   }
 
@@ -63,5 +69,5 @@ export function calculateResults(
     tier,
     completedAt: new Date(),
     certificateId: generateCertificateId(),
-  };
+  }
 }

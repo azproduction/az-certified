@@ -40,22 +40,22 @@ export const theme = {
   },
 
   fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    base: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
+    'xs': '0.75rem',
+    'sm': '0.875rem',
+    'base': '1rem',
+    'lg': '1.125rem',
+    'xl': '1.25rem',
     '2xl': '1.5rem',
     '3xl': '1.875rem',
     '4xl': '2.25rem',
   },
 
   spacing: {
-    xs: '0.5rem',
-    sm: '0.75rem',
-    md: '1rem',
-    lg: '1.5rem',
-    xl: '2rem',
+    'xs': '0.5rem',
+    'sm': '0.75rem',
+    'md': '1rem',
+    'lg': '1.5rem',
+    'xl': '2rem',
     '2xl': '3rem',
     '3xl': '4rem',
   },
@@ -80,6 +80,6 @@ export const theme = {
     base: '200ms ease-in-out',
     slow: '300ms ease-in-out',
   },
-};
+}
 
-export type Theme = typeof theme;
+export type Theme = typeof theme
