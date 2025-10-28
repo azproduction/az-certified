@@ -13,7 +13,7 @@ const Container = styled.div<{ $tier: string }>`
   justify-content: center;
   min-height: 100vh;
   padding: ${props => props.theme.spacing.lg};
-  background: ${props => {
+  background: ${(props) => {
     const tier = props.$tier.toLowerCase()
     if (tier === 'platinum')
       return props.theme.colors.certificate.platinum.gradient
@@ -23,6 +23,37 @@ const Container = styled.div<{ $tier: string }>`
       return props.theme.colors.certificate.silver.gradient
     return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   }};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 12.5 5, 25 10 T 50 10 T 75 10 T 100 10' stroke='white' stroke-width='0.5' fill='none'/%3E%3Cpath d='M0 15 Q 12.5 10, 25 15 T 50 15 T 75 15 T 100 15' stroke='white' stroke-width='0.5' fill='none'/%3E%3C/svg%3E");
+    background-size: 100px 20px;
+    background-repeat: repeat;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 10 6, 20 10 T 40 10 T 60 10 T 80 10' stroke='white' stroke-width='0.4' fill='none'/%3E%3C/svg%3E");
+    background-size: 80px 20px;
+    background-repeat: repeat;
+    transform: rotate(45deg) scale(1.5);
+    transform-origin: center;
+    pointer-events: none;
+  }
 `
 
 const CertificateWrapper = styled.div`
@@ -33,6 +64,7 @@ const CertificateWrapper = styled.div`
   container-name: certificate;
   border-radius: 8px;
   overflow: hidden;
+  z-index: 1;
 `
 
 const TextOverlay = styled.div`
@@ -128,10 +160,9 @@ const InfoItem = styled.div`
 
 interface CertificateProps {
   result: CertificateResult
-  onRestart: () => void
 }
 
-export function CertificateWithSVG({ result, onRestart }: CertificateProps) {
+export function CertificateWithSVG({ result }: CertificateProps) {
   useEffect(() => {
     // Tier-specific confetti configurations
     const confettiConfig = {
