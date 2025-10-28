@@ -14,6 +14,20 @@ export interface Question {
   difficulty: string
 }
 
+// Zod schema for Question validation
+export const questionSchema = z.object({
+  id: z.string(),
+  question: z.string().min(1),
+  options: z.array(z.string()).min(2),
+  answer: z.number().int().min(0),
+  importance: z.enum(['normal', 'critical']),
+  topic_tags: z.array(z.string()),
+  slide_ref: z.number().int().nullable(),
+  vtt_timestamp: z.string(),
+  bloom_level: z.string(),
+  difficulty: z.string(),
+})
+
 // Quiz configuration
 export interface QuizConfig {
   shuffleOptions: boolean
