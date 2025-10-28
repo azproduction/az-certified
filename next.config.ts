@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         loaders: ['raw-loader'],
         as: '*.js',
       },
+      '*.svg': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
     },
   },
 };

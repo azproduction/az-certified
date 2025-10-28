@@ -1,8 +1,11 @@
 'use client'
 
 import type { CertificateTier } from '@/types/quiz'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+
+// Import SVG as raw string via raw-loader
+import certificateFrameSvg from '../certificate-frame.svg'
 
 const SVGContainer = styled.div<{ $tier: string }>`
   position: relative;
@@ -60,24 +63,10 @@ interface CertificateSVGFrameProps {
 }
 
 export function CertificateSVGFrame({ tier }: CertificateSVGFrameProps) {
-  const [svgContent, setSvgContent] = useState<string>('')
-
-  useEffect(() => {
-    fetch('/certificate-frame.svg')
-      .then(res => res.text())
-      .then((svg) => {
-        setSvgContent(svg)
-      })
-      .catch(err => console.error('Failed to load certificate SVG:', err))
-  }, [])
-
-  if (!svgContent)
-    return null
-
   return (
     <SVGContainer
       $tier={tier}
-      dangerouslySetInnerHTML={{ __html: svgContent }}
+      dangerouslySetInnerHTML={{ __html: certificateFrameSvg }}
     />
   )
 }
