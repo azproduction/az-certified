@@ -15,14 +15,8 @@ npm run dev
 # Build for production (static export to ./out directory)
 npm run build
 
-# Production preview
-npm start
-
 # Static export (alias for build)
 npm run export
-
-# Lint code
-npm run lint
 
 # Lint and auto-fix issues
 npm run lint:fix
@@ -193,3 +187,8 @@ The app tracks three distinct failure reasons:
 - **'score'**: Scored below 60%
 
 Each has custom messaging in the Failure component.
+
+## Linting
+
+- Use a fix version of eslint when needed `npm run lint:fix`
+- To test that everything works use `npm run build`

@@ -24,6 +24,17 @@ export default function Home() {
   const [timeRemaining, setTimeRemaining] = useState(TIME_LIMIT_MS)
   const [certificateResult, setCertificateResult] = useState<CertificateResult | null>(null)
   const [failureReason, setFailureReason] = useState<FailureReason>('score')
+  const [failureStats, setFailureStats] = useState<{
+    totalQuestions: number
+    correctAnswers: number
+    score: number
+    criticalQuestionsWrong: number
+  }>({
+    totalQuestions: 0,
+    correctAnswers: 0,
+    score: 0,
+    criticalQuestionsWrong: 0,
+  })
 
   // Load participant name on mount
   useEffect(() => {
@@ -45,13 +56,36 @@ export default function Home() {
 
       // Time's up!
       if (remaining === 0) {
+        // Calculate statistics for time failure
+        let criticalWrong = 0
+        let correctAnswers = 0
+
+        questions.forEach((question) => {
+          const userAnswer = answers[question.id]
+          if (userAnswer === question.answer) {
+            correctAnswers++
+          }
+          if (userAnswer !== question.answer && question.importance === 'critical') {
+            criticalWrong++
+          }
+        })
+
+        const score = (correctAnswers / questions.length) * 100
+
+        setFailureStats({
+          totalQuestions: questions.length,
+          correctAnswers,
+          score,
+          criticalQuestionsWrong: criticalWrong,
+        })
+
         setFailureReason('time')
         setScreen('failure')
       }
     }, 100)
 
     return () => clearInterval(interval)
-  }, [screen, startTime])
+  }, [screen, startTime, questions, answers])
 
   const startQuiz = () => {
     const selectedQuestions = generateQuizQuestions()
@@ -100,13 +134,28 @@ export default function Home() {
 
     // Check for failure conditions
     if (result.tier === 'Failed') {
-      // Determine specific failure reason
+      // Calculate statistics
       let criticalWrong = 0
+      let correctAnswers = 0
+
       questions.forEach((question) => {
         const userAnswer = answers[question.id]
+        if (userAnswer === question.answer) {
+          correctAnswers++
+        }
         if (userAnswer !== question.answer && question.importance === 'critical') {
           criticalWrong++
         }
+      })
+
+      const score = (correctAnswers / questions.length) * 100
+
+      // Store failure statistics
+      setFailureStats({
+        totalQuestions: questions.length,
+        correctAnswers,
+        score,
+        criticalQuestionsWrong: criticalWrong,
       })
 
       if (criticalWrong >= CRITICAL_QUESTION_FAIL_THRESHOLD) {
@@ -155,7 +204,16 @@ export default function Home() {
   }
 
   if (screen === 'failure') {
-    return <Failure reason={failureReason} onRestart={handleRestart} />
+    return (
+      <Failure
+        reason={failureReason}
+        onRestart={handleRestart}
+        totalQuestions={failureStats.totalQuestions}
+        correctAnswers={failureStats.correctAnswers}
+        score={failureStats.score}
+        criticalQuestionsWrong={failureStats.criticalQuestionsWrong}
+      />
+    )
   }
 
   if (screen === 'certificate' && certificateResult) {

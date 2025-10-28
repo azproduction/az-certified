@@ -13,10 +13,8 @@ const Container = styled.div`
 `
 
 const Card = styled.div`
-  background: ${props => props.theme.colors.surface};
   border-radius: ${props => props.theme.borderRadius.xl};
   padding: ${props => props.theme.spacing['3xl']};
-  box-shadow: ${props => props.theme.shadows.xl};
   max-width: 600px;
   width: 100%;
   text-align: center;
@@ -36,7 +34,7 @@ const Title = styled.h1`
 const Message = styled.p`
   font-size: ${props => props.theme.fontSizes.lg};
   color: ${props => props.theme.colors.textLight};
-  margin-bottom: ${props => props.theme.spacing['2xl']};
+  margin-bottom: ${props => props.theme.spacing.xl};
   line-height: 1.6;
 `
 
@@ -58,9 +56,13 @@ const Button = styled.button`
 interface FailureProps {
   reason: 'time' | 'critical' | 'score'
   onRestart: () => void
+  totalQuestions: number
+  correctAnswers: number
+  score: number
+  criticalQuestionsWrong: number
 }
 
-export function Failure({ reason, onRestart }: FailureProps) {
+export function Failure({ reason, onRestart, totalQuestions, correctAnswers, score, criticalQuestionsWrong }: FailureProps) {
   const getMessage = () => {
     switch (reason) {
       case 'time':
@@ -80,6 +82,34 @@ export function Failure({ reason, onRestart }: FailureProps) {
         <Icon>😔</Icon>
         <Title>Not today</Title>
         <Message>{getMessage()}</Message>
+        <Message>
+          You successfully answered
+          {' '}
+          {correctAnswers}
+          /
+          {totalQuestions}
+          {' '}
+          questions
+          {' '}
+          {' '}
+          which is
+          {' '}
+          {score.toFixed(0)}
+          % of all questions.
+          {' '}
+          {criticalQuestionsWrong > 0 && (
+            <>
+              And you missed
+              {' '}
+              {criticalQuestionsWrong}
+              {' '}
+              critical
+              {' '}
+              {criticalQuestionsWrong === 1 ? 'question' : 'questions'}
+              .
+            </>
+          )}
+        </Message>
         <Message>
           Don't worry! Take some time to review the material and try again when you're ready.
         </Message>
