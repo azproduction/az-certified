@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
-import { Dancing_Script, Great_Vibes, Playfair_Display } from 'next/font/google'
+import { Dancing_Script, Great_Vibes, Inter, Playfair_Display } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import StyledComponentsRegistry from '@/lib/registry'
+
+const inter = Inter({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 const greatVibes = Great_Vibes({
   weight: '400',
@@ -66,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${greatVibes.variable} ${dancingScript.variable} ${playfairDisplay.variable}`}>
+    <html lang="en" className={`${inter.variable} ${greatVibes.variable} ${dancingScript.variable} ${playfairDisplay.variable}`}>
       <body>
         <StyledComponentsRegistry>
           <ThemeProvider>{children}</ThemeProvider>

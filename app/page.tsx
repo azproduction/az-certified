@@ -7,7 +7,7 @@ import { Failure } from '@/components/Failure'
 import { NameInput } from '@/components/NameInput'
 import { Quiz } from '@/components/Quiz'
 import { generateQuizQuestions } from '@/lib/questionLoader'
-import { calculateResults } from '@/lib/scoring'
+import { calculateResults, generateCertificateId } from '@/lib/scoring'
 import { loadParticipantName, saveParticipantName } from '@/lib/storage'
 import { CRITICAL_QUESTION_FAIL_THRESHOLD, TIME_LIMIT_MS } from '@/types/quiz'
 
@@ -132,6 +132,23 @@ export default function Home() {
     setStartTime(0)
     setTimeRemaining(TIME_LIMIT_MS)
     setCertificateResult(null)
+  }
+
+  if (true) {
+    return (
+      <CertificateWithSVG
+        result={{
+          participantName: 'Pewpew Ololo',
+          totalQuestions: questions.length,
+          correctAnswers: questions.length,
+          score: Math.round(100 * 10) / 10, // Round to 1 decimal place
+          tier: 'Platinum',
+          completedAt: new Date(),
+          certificateId: generateCertificateId(),
+        }}
+        onRestart={handleRestart}
+      />
+    )
   }
 
   // Render current screen

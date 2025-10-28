@@ -53,6 +53,7 @@ const TopSection = styled.div`
 `
 
 const CertificateTitle = styled.div<{ $tier: string }>`
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 8cqw;
   font-weight: 600;
   text-align: center;
@@ -68,6 +69,7 @@ const CertificateTitle = styled.div<{ $tier: string }>`
 `
 
 const Subtitle = styled.div`
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 2.5cqw;
   text-align: center;
   color: #303534;
@@ -75,12 +77,12 @@ const Subtitle = styled.div`
 `
 
 const ParticipantName = styled.div`
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 7cqw;
   text-align: center;
   color: #303534;
-  font-weight: 400;
+  font-weight: 700;
   max-width: 80cqw;
-  font-family: 'Georgia', 'Times New Roman', serif;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -88,6 +90,7 @@ const ParticipantName = styled.div`
 `
 
 const DescriptionText = styled.div`
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 2cqw;
   text-align: center;
   color: #303534;
