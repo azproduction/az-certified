@@ -22,10 +22,11 @@ const playfairDisplay = Playfair_Display({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://azproduction.github.io/az-certified'),
   title: 'A.Z. Certified Exam',
   description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification. Globally recognized qualification for photography excellence.',
   keywords: ['cosplay photography', 'certification', 'professional exam', 'photography certification', 'A.Z. certified'],
-  authors: [{ name: 'A.Z. Certification Board' }],
+  authors: [{ name: 'A.Z. Production' }],
   openGraph: {
     title: 'A.Z. Certified Exam',
     description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification.',
@@ -46,16 +47,17 @@ export const metadata: Metadata = {
     title: 'A.Z. Certified Exam',
     description: 'Cosplay Photography Excellence Certification - Test your knowledge and earn your professional certification.',
     images: ['/og-image.jpg'],
-    creator: '@azcertified',
+    creator: '@azproductioncos',
   },
   robots: {
     index: true,
     follow: true,
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-  },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({

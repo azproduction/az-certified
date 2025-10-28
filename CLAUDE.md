@@ -28,7 +28,7 @@ npm run lint
 npm run lint:fix
 ```
 
-**Note**: Use `--webpack` flag explicitly for dev/build when needed. The project is configured to work with both Webpack and Turbopack.
+**Note**: The project uses Turbopack (Next.js 16's stable default bundler) for both development and production builds.
 
 ## Architecture
 
@@ -50,14 +50,18 @@ Key directories:
 
 ### Question Bank System
 
-Questions are stored in a **JSONL file** (JSON Lines format). The webpack/turbopack configuration includes a custom loader to import JSONL as raw strings:
+Questions are stored in a **JSONL file** (JSON Lines format). The Turbopack configuration uses `raw-loader` to import JSONL as raw strings:
 
 ```typescript
-// next.config.ts webpack configuration
-config.module.rules.push({
-  test: /\.jsonl$/,
-  type: 'asset/source',
-});
+// next.config.ts Turbopack configuration
+turbopack: {
+  rules: {
+    '*.jsonl': {
+      loaders: ['raw-loader'],
+      as: '*.js',
+    },
+  },
+}
 ```
 
 Questions are parsed and validated at runtime using Zod schemas. Each question has:
